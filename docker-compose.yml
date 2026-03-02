@@ -1,0 +1,15 @@
+services:
+  machine1:
+    image: ${IMAGE}
+    hostname: ${IMAGE}1
+    build: machine
+    volumes:
+      - ./flag:/flag
+    ports:
+      - ${PORTOUT}:${PORTIN}
+    networks:
+      - internal_net
+
+networks:
+  internal_net:
+    driver: bridge
