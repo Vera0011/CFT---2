@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 
-rm dockername.txt 
-rm .env
+rm -f dockername.txt
+rm -f .env

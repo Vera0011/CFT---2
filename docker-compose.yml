@@ -1,15 +1,52 @@
 services:
-  machine1:
-    image: ${IMAGE}
-    hostname: ${IMAGE}1
-    build: machine
+  bastion:
+    image: vera-bastion-image:latest
+    build:
+      context: machines/bastion
+      dockerfile: Dockerfile
+    hostname: vera-bastion
     volumes:
-      - ./flag:/flag
+      - ./flag1:/flag
     ports:
-      - ${PORTOUT}:${PORTIN}
+      - 8080:80
     networks:
       - internal_net
 
+  machine1:
+    image: vera-machine1-image:latest
+    build:
+      context: machines/machine1
+      dockerfile: Dockerfile
+    hostname: vera-machine1
+    volumes:
+      - ./flag2:/flag
+    ports:
+      - 8080:80
+      - 22:22
+    networks:
+      - bastion_to_machine1
+      - machine1_to_machine2
+
+  machine2:
+    image: vera-machine2-image:latest
+    build:
+      context: machines/machine2
+      dockerfile: Dockerfile
+    hostname: vera-machine2
+    volumes:
+      - ./flag3:/flag
+    ports:
+      - 22:22
+    networks:
+      - bastion_to_machine2
+      - machine1_to_machine2
+
 networks:
   internal_net:
+    driver: bridge
+  bastion_to_machine1:
+    driver: bridge
+  bastion_to_machine2:
+    driver: bridge
+  machine1_to_machine2:
     driver: bridge

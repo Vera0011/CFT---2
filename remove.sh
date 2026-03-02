@@ -1,9 +1,15 @@
-#! /bin/bash
+#!/bin/bash
 
 if [ -e dockername.txt ]; then
-	NAME=$(cat dockername.txt);
+	CONTAINERS=$(cat dockername.txt)
+	
+	while IFS= read -r name; do
+    	docker compose --env-file /dev/null -p $name down --rmi all
+	done <<< "$CONTAINERS"
 else
-	NAME="imagen-template-system";
+	mapfile -t CONTAINERS < <(yq '.services | keys | .[]' ./docker-compose.yml)
+	
+	for name in "${CONTAINERS[@]}"; do
+		docker compose --env-file /dev/null -p $name down --rmi all
+	done;
 fi;
-
-docker compose -p $NAME down --rmi all
