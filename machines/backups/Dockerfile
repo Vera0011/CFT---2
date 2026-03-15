@@ -9,5 +9,4 @@ RUN chmod 777 execute.sh;
 
 RUN ./prepare.sh;
 
-# Comando por defecto al iniciar el contenedor
 CMD ["bash", "/opt/src/execute.sh"]

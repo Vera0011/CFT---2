@@ -1,9 +1,14 @@
-#! /bin/bash
-apt update && apt install -y sudo passwd ssh php && apt clean
+#!/bin/bash
 
-USERNAME="dummy";
-PASSWORD="dummy";
+sudo apt update
+sudo apt install -y
+sudo apt install nginx
+sudo passwd ssh
+sudo apt clean
+
+USERNAME="vera";
+PASSWORD=""vera;
 
 echo "$USERNAME:$PASSWORD:$INITID:$INITID::/home/$USERNAME:/bin/bash" > /root/users.txt
 
-newusers /root/users.txt
+sudo newusers /root/users.txt

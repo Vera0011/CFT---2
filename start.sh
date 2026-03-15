@@ -1,8 +1,9 @@
 #!/bin/bash
 
+mkdir -p flags
 
 for flag in {1,2,3}; do
-	echo $RANDOM | sha256sum | awk '{print "vera{"$1"}"}' > flag/flag$flag.txt
+	echo $RANDOM | sha256sum | awk '{print "vera{"$1"}"}' > flags/flag$flag.txt
 done;
 
 if [ -e dockername.txt ]; then
