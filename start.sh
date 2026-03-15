@@ -1,5 +1,11 @@
 #!/bin/bash
 
+#######################################################################################################################
+# This script do the following actions:
+#	- Creates 'flags' directory and creates 3 flags in it
+#	- Maps containers and starts them (reading from dockername.txt or from docker-compose.yml)
+#######################################################################################################################
+
 mkdir -p flags
 
 for flag in {1,2,3}; do

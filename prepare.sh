@@ -1,5 +1,12 @@
 #!/bin/bash
 
+##############################################################################################
+# This script do the following actions:
+#   - Resets env variables files (if present)
+#	- Maps containers (directly from docker-compose.yml)
+#	- Sets the available ports, image and container name to dockername.txt
+##############################################################################################
+
 # Reset env
 > .env
 > dockername.txt

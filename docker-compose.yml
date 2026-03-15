@@ -1,5 +1,6 @@
 services:
   bastion:
+    image: vera-bastion-image:latest
     build:
       context: machines/bastion
       dockerfile: Dockerfile
@@ -13,6 +14,7 @@ services:
       - private_net
 
   backups:
+    image: vera-backups-image:latest
     build:
       context: machines/backups
       dockerfile: Dockerfile
@@ -26,6 +28,7 @@ services:
       - private_net
 
   smtp:
+    image: vera-smtp-image:latest
     build:
       context: machines/smtp
       dockerfile: Dockerfile
