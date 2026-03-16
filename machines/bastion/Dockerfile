@@ -1,13 +1,15 @@
-FROM debian
+FROM ubuntu:noble
+WORKDIR /app
 
-COPY html /var/www/html/
-COPY src /opt/src/
+COPY . .
 
-RUN cd /opt/src/;
-chmod 777 prepare.sh;
-chmod 777 execute.sh;
-./prepare.sh;
+# Installs and configures required packages and project
+RUN scripts/prepare.sh && \
+    mv /app/scripts/execute.sh /execute.sh && \
+    rm -rf /app
 
-# Comando por defecto al iniciar el contenedor
-CMD ["bash"]
-ENTRYPOINT ["/opt/src/execute.sh"]
+WORKDIR /
+
+EXPOSE 80 443 22
+
+CMD ["bash", "/execute.sh"]
