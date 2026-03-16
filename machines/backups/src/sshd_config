@@ -1,0 +1,21 @@
+Port 22
+ListenAddress 192.168.10.3
+
+SyslogFacility AUTH
+LogLevel INFO
+
+PermitRootLogin no
+PubkeyAuthentication yes
+AllowUsers ubuntu@192.168.10.2
+
+AuthorizedKeysFile     .ssh/authorized_keys
+PasswordAuthentication no
+
+KbdInteractiveAuthentication no
+UsePAM yes
+X11Forwarding yes
+PrintMotd yes
+
+AcceptEnv LANG LC_*
+
+Subsystem       sftp    /usr/lib/openssh/sftp-server

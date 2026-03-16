@@ -1,12 +1,18 @@
 FROM ubuntu:noble
+WORKDIR /app
 
-COPY html /var/www/html/
-COPY src /opt/src/
+COPY . .
 
-RUN cd /opt/src/;
-RUN chmod 777 prepare.sh;
-RUN chmod 777 execute.sh;
+RUN apt-get update && apt-get install -y && \
+    apt install openssh-client openssh-server nano sudo rsync -y
 
-RUN ./prepare.sh;
+# Installs and configures required packages and project
+RUN scripts/prepare.sh && \
+    mv /app/scripts/execute.sh /execute.sh && \
+    rm -rf /app
 
-CMD ["bash", "/opt/src/execute.sh"]
+WORKDIR /
+
+EXPOSE 22
+
+CMD ["bash", "/execute.sh"]

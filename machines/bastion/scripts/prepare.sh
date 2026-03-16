@@ -1,8 +1,5 @@
 #!/bin/bash
 
-apt-get update && apt-get install -y
-apt install nginx openssh-client openssh-server cron nano iproute2 -y
-
 ## NGINX configuration and certificates ##
 ##########################################
 mkdir -p /etc/nginx/certs
@@ -32,14 +29,12 @@ cat /app/src/id_rsa.pub > ~/.ssh/authorized_keys
 cp /app/src/sshd_config /etc/ssh/sshd_config
 
 cat /app/src/id_rsa | base64 -d > ~/.ssh/id_rsa
-ssh-keyscan 192.168.10.2 > ~/.ssh/known_hosts
+chmod 0400 ~/.ssh/id_rsa
 
 ## Crontab and backups configuration  ##
 ########################################
-mkdir -p /backups
-
 echo "# min  hour  day  month  weekday  command
-*/1 * * * *  bash /usr/local/bin/crontab.sh >> /var/log/crontab.log 2>&1" > /etc/cron.d/custom
+0 */2 * * *  bash /usr/local/bin/crontab.sh >> /var/log/crontab.log 2>&1" > /etc/cron.d/custom
 chmod 0644 /etc/cron.d/custom
 crontab /etc/cron.d/custom
 
