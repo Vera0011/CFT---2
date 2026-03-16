@@ -1,0 +1,2497 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hacked S.A</title>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --green: #00ff41;
+            --green-dim: #00aa2a;
+            --green-dark: #003b10;
+            --bg: #020c02;
+            --bg2: #040f04;
+            --red: #ff003c;
+            --cyan: #00fff7;
+            --gray: #1a2a1a;
+            --border: #00ff4133;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        ::selection {
+            background: var(--green);
+            color: #000;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--green);
+            font-family: 'Share Tech Mono', monospace;
+            overflow-x: hidden;
+            cursor: crosshair;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, 0.08) 2px, rgba(0, 0, 0, 0.08) 4px);
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        #matrix {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.04;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        nav {
+            border-bottom: 1px solid var(--border);
+            padding: 1.2rem 0;
+            position: sticky;
+            top: 0;
+            background: rgba(2, 12, 2, 0.97);
+            backdrop-filter: blur(6px);
+            z-index: 100;
+        }
+
+        nav .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-family: 'Orbitron', monospace;
+            font-weight: 900;
+            font-size: 1.4rem;
+            letter-spacing: 0.2em;
+            text-shadow: 0 0 20px var(--green);
+            animation: flicker 6s infinite;
+            cursor: pointer;
+        }
+
+        .logo span {
+            color: var(--red);
+            text-shadow: 0 0 20px var(--red);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 0;
+            list-style: none;
+            font-size: 0.78rem;
+            letter-spacing: 0.1em;
+        }
+
+        .nav-links a {
+            color: var(--green-dim);
+            text-decoration: none;
+            padding: 0.5rem 1.2rem;
+            border: 1px solid transparent;
+            transition: all 0.2s;
+            display: block;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--green);
+            border-color: var(--border);
+            text-shadow: 0 0 10px var(--green);
+            background: rgba(0, 255, 65, 0.04);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            font-size: 1.2rem;
+        }
+
+        .nav-icon {
+            cursor: pointer;
+            transition: text-shadow 0.2s, transform 0.2s;
+        }
+
+        .nav-icon:hover {
+            text-shadow: 0 0 12px var(--cyan);
+            transform: scale(1.2);
+        }
+
+        #cart-count {
+            font-family: 'Orbitron', monospace;
+            font-size: 0.7rem;
+            background: var(--green);
+            color: #000;
+            padding: 0 4px;
+            margin-left: 3px;
+        }
+
+        .page-section {
+            display: none;
+        }
+
+        .page-section.active {
+            display: block;
+        }
+
+        .hero {
+            padding: 6rem 0 4rem;
+            text-align: center;
+        }
+
+        .hero-tag {
+            font-size: 0.75rem;
+            letter-spacing: 0.3em;
+            color: var(--green-dim);
+            margin-bottom: 1.5rem;
+            animation: blink 1.2s step-end infinite;
+        }
+
+        .hero h1 {
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 900;
+            line-height: 1.1;
+            text-transform: uppercase;
+            text-shadow: 0 0 40px var(--green), 0 0 80px var(--green-dark);
+            margin-bottom: 1rem;
+            animation: glitch 8s infinite;
+        }
+
+        .hero h1 em {
+            color: transparent;
+            -webkit-text-stroke: 1px var(--green);
+            font-style: normal;
+        }
+
+        .hero-sub {
+            font-size: 0.9rem;
+            color: var(--green-dim);
+            letter-spacing: 0.15em;
+            max-width: 500px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.8;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-bottom: 3rem;
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            color: var(--green-dim);
+        }
+
+        .stat-val {
+            display: block;
+            font-family: 'Orbitron', monospace;
+            font-size: 1.6rem;
+            color: var(--green);
+            text-shadow: 0 0 15px var(--green);
+            margin-bottom: 0.2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.85rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            padding: 0.9rem 2.5rem;
+            border: 1px solid var(--green);
+            color: var(--bg);
+            background: var(--green);
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--cyan);
+            transform: translateX(-100%);
+            transition: transform 0.3s;
+            z-index: 0;
+        }
+
+        .btn span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn:hover::before {
+            transform: translateX(0);
+        }
+
+        .btn:hover {
+            color: #000;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--green);
+            margin-left: 1rem;
+        }
+
+        .btn-ghost:hover {
+            color: #000;
+        }
+
+        .btn-sm {
+            font-size: 0.72rem;
+            padding: 0.6rem 1.4rem;
+        }
+
+        .ticker {
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            padding: 0.6rem 0;
+            overflow: hidden;
+            background: var(--bg2);
+            margin-bottom: 5rem;
+        }
+
+        .ticker-inner {
+            display: flex;
+            gap: 4rem;
+            animation: scroll-left 28s linear infinite;
+            white-space: nowrap;
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            color: var(--green-dim);
+        }
+
+        .ticker-item span {
+            color: var(--green);
+            margin-right: 0.4rem;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .section-header h2 {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.1rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+        }
+
+        .section-header::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(to right, var(--green-dim), transparent);
+        }
+
+        .section-label {
+            font-size: 0.7rem;
+            letter-spacing: 0.25em;
+            color: var(--green-dim);
+            border: 1px solid var(--border);
+            padding: 0.2rem 0.6rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5px;
+            background: var(--border);
+            border: 1px solid var(--border);
+        }
+
+        .card {
+            background: var(--bg2);
+            padding: 2rem;
+            position: relative;
+            transition: background 0.3s;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 3px;
+            height: 0;
+            background: var(--green);
+            transition: height 0.4s;
+        }
+
+        .card:hover {
+            background: #060f06;
+        }
+
+        .card:hover::before {
+            height: 100%;
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: block;
+            filter: drop-shadow(0 0 6px var(--green));
+        }
+
+        .card-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 0.6rem;
+            letter-spacing: 0.15em;
+            padding: 0.2rem 0.5rem;
+            border: 1px solid;
+        }
+
+        .badge-new {
+            border-color: var(--cyan);
+            color: var(--cyan);
+        }
+
+        .badge-hot {
+            border-color: var(--red);
+            color: var(--red);
+        }
+
+        .badge-sale {
+            border-color: var(--green);
+            color: var(--green);
+        }
+
+        .badge-pro {
+            border-color: #ffd700;
+            color: #ffd700;
+        }
+
+        .card h3 {
+            font-family: 'Orbitron', monospace;
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .card p {
+            font-size: 0.75rem;
+            color: var(--green-dim);
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .price {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.1rem;
+            color: var(--green);
+            text-shadow: 0 0 10px var(--green);
+        }
+
+        .price-old {
+            font-size: 0.7rem;
+            color: var(--green-dim);
+            text-decoration: line-through;
+            margin-left: 0.4rem;
+        }
+
+        .add-btn {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--green);
+            background: transparent;
+            color: var(--green);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .add-btn:hover {
+            background: var(--green);
+            color: #000;
+        }
+
+        .filter-bar {
+            display: flex;
+            gap: 0;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border);
+            overflow-x: auto;
+        }
+
+        .filter-btn {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.72rem;
+            letter-spacing: 0.15em;
+            padding: 0.6rem 1.2rem;
+            background: transparent;
+            color: var(--green-dim);
+            border: none;
+            border-right: 1px solid var(--border);
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .filter-btn:last-child {
+            border-right: none;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: rgba(0, 255, 65, 0.08);
+            color: var(--green);
+        }
+
+        .banner {
+            border: 1px solid var(--border);
+            padding: 3rem;
+            margin-bottom: 5rem;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: center;
+            gap: 2rem;
+            background: linear-gradient(135deg, var(--bg2), var(--green-dark) 200%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .banner::after {
+            content: '⚠';
+            position: absolute;
+            right: -1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 10rem;
+            opacity: 0.03;
+        }
+
+        .banner h2 {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.6rem;
+            margin-bottom: 0.8rem;
+            text-shadow: 0 0 20px var(--green);
+        }
+
+        .banner p {
+            font-size: 0.8rem;
+            color: var(--green-dim);
+            line-height: 1.8;
+            max-width: 500px;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            margin-bottom: 5rem;
+        }
+
+        .feature {
+            background: var(--bg2);
+            padding: 1.8rem;
+            text-align: center;
+        }
+
+        .feature-icon {
+            font-size: 1.8rem;
+            display: block;
+            margin-bottom: 0.8rem;
+        }
+
+        .feature h4 {
+            font-family: 'Orbitron', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            margin-bottom: 0.4rem;
+        }
+
+        .feature p {
+            font-size: 0.7rem;
+            color: var(--green-dim);
+            line-height: 1.6;
+        }
+
+        .terminal {
+            border: 1px solid var(--border);
+            font-size: 0.8rem;
+        }
+
+        .terminal-bar {
+            background: var(--gray);
+            padding: 0.5rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.7rem;
+            letter-spacing: 0.1em;
+            color: var(--green-dim);
+        }
+
+        .t-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .t-red {
+            background: var(--red);
+        }
+
+        .t-yellow {
+            background: #ffd700;
+        }
+
+        .t-green {
+            background: var(--green);
+        }
+
+        .terminal-body {
+            padding: 1.5rem;
+            line-height: 2;
+        }
+
+        .t-line {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .t-prompt {
+            color: var(--green-dim);
+        }
+
+        .t-cmd {
+            color: var(--cyan);
+        }
+
+        .t-out {
+            color: var(--green-dim);
+            padding-left: 1rem;
+        }
+
+        .t-success {
+            color: var(--green);
+            padding-left: 1rem;
+        }
+
+        .t-error {
+            color: var(--red);
+            padding-left: 1rem;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 0.5rem;
+            height: 1rem;
+            background: var(--green);
+            vertical-align: middle;
+            animation: blink 1s step-end infinite;
+        }
+
+        /* SERVICES */
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            margin-bottom: 3rem;
+        }
+
+        .service-card {
+            background: var(--bg2);
+            padding: 2.5rem 2rem;
+            position: relative;
+            transition: background 0.3s;
+            overflow: hidden;
+        }
+
+        .service-card::after {
+            content: attr(data-num);
+            position: absolute;
+            bottom: -0.5rem;
+            right: 1rem;
+            font-family: 'Orbitron', monospace;
+            font-size: 4rem;
+            font-weight: 900;
+            color: var(--green);
+            opacity: 0.04;
+        }
+
+        .service-card:hover {
+            background: #060f06;
+        }
+
+        .service-icon {
+            font-size: 2rem;
+            margin-bottom: 1.2rem;
+            display: block;
+        }
+
+        .service-card h3 {
+            font-family: 'Orbitron', monospace;
+            font-size: 0.82rem;
+            letter-spacing: 0.12em;
+            margin-bottom: 0.8rem;
+            text-transform: uppercase;
+        }
+
+        .service-card p {
+            font-size: 0.75rem;
+            color: var(--green-dim);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .service-tag {
+            display: inline-block;
+            font-size: 0.62rem;
+            letter-spacing: 0.12em;
+            padding: 0.15rem 0.5rem;
+            border: 1px solid var(--border);
+            color: var(--green-dim);
+            margin: 0.15rem 0.15rem 0 0;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            margin-bottom: 5rem;
+        }
+
+        .pricing-card {
+            background: var(--bg2);
+            padding: 2.5rem 2rem;
+            text-align: center;
+            position: relative;
+            transition: background 0.3s;
+        }
+
+        .pricing-card.featured {
+            background: #060f06;
+            border-top: 2px solid var(--green);
+        }
+
+        .pricing-card.featured::before {
+            content: '★ MOST POPULAR';
+            position: absolute;
+            top: -1px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100%);
+            font-size: 0.6rem;
+            letter-spacing: 0.2em;
+            background: var(--green);
+            color: #000;
+            padding: 0.2rem 0.8rem;
+        }
+
+        .pricing-name {
+            font-family: 'Orbitron', monospace;
+            font-size: 0.8rem;
+            letter-spacing: 0.2em;
+            color: var(--green-dim);
+            margin-bottom: 1rem;
+        }
+
+        .pricing-price {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.5rem;
+            font-weight: 900;
+            text-shadow: 0 0 20px var(--green);
+            margin-bottom: 0.3rem;
+        }
+
+        .pricing-period {
+            font-size: 0.7rem;
+            color: var(--green-dim);
+            margin-bottom: 2rem;
+        }
+
+        .pricing-features {
+            list-style: none;
+            text-align: left;
+            margin-bottom: 2rem;
+        }
+
+        .pricing-features li {
+            font-size: 0.75rem;
+            color: var(--green-dim);
+            padding: 0.4rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .pricing-features li::before {
+            content: '⊳ ';
+            color: var(--green);
+        }
+
+        .pricing-features li.na {
+            opacity: 0.3;
+        }
+
+        .pricing-features li.na::before {
+            content: '✕ ';
+            color: var(--red);
+        }
+
+        /* TOOLS */
+        .tools-layout {
+            display: grid;
+            grid-template-columns: 220px 1fr;
+            gap: 1.5px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            margin-bottom: 3rem;
+            min-height: 500px;
+        }
+
+        .tools-sidebar {
+            background: var(--bg2);
+            padding: 1.5rem 0;
+        }
+
+        .tools-cat {
+            font-size: 0.65rem;
+            letter-spacing: 0.25em;
+            color: var(--green-dim);
+            padding: 0.5rem 1.5rem 0.3rem;
+            text-transform: uppercase;
+        }
+
+        .tools-item {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.7rem 1.5rem;
+            font-size: 0.75rem;
+            letter-spacing: 0.08em;
+            color: var(--green-dim);
+            cursor: pointer;
+            border-left: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .tools-item:hover,
+        .tools-item.active {
+            color: var(--green);
+            background: rgba(0, 255, 65, 0.05);
+            border-left-color: var(--green);
+        }
+
+        .tools-content {
+            background: var(--bg2);
+        }
+
+        .tool-panel {
+            display: none;
+            padding: 2rem;
+        }
+
+        .tool-panel.active {
+            display: block;
+        }
+
+        .tool-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tool-big-icon {
+            font-size: 3rem;
+            filter: drop-shadow(0 0 10px var(--green));
+        }
+
+        .tool-header h3 {
+            font-family: 'Orbitron', monospace;
+            font-size: 1rem;
+            letter-spacing: 0.12em;
+            margin-bottom: 0.4rem;
+        }
+
+        .tool-header p {
+            font-size: 0.75rem;
+            color: var(--green-dim);
+            line-height: 1.8;
+        }
+
+        .tool-meta {
+            display: flex;
+            gap: 2rem;
+            font-size: 0.7rem;
+            color: var(--green-dim);
+            margin-top: 1rem;
+        }
+
+        .tool-meta strong {
+            color: var(--green);
+        }
+
+        .tool-specs {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+        }
+
+        .tool-spec {
+            background: var(--bg);
+            padding: 1rem 1.2rem;
+            font-size: 0.72rem;
+            color: var(--green-dim);
+        }
+
+        .tool-spec strong {
+            color: var(--green);
+            display: block;
+            margin-bottom: 0.2rem;
+            font-size: 0.8rem;
+        }
+
+        .tool-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        /* CONTACT */
+        .contact-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            margin-bottom: 3rem;
+        }
+
+        .contact-info {
+            background: var(--bg2);
+            padding: 3rem 2.5rem;
+        }
+
+        .contact-form-wrap {
+            background: var(--bg2);
+            padding: 3rem 2.5rem;
+        }
+
+        .contact-info h3 {
+            font-family: 'Orbitron', monospace;
+            font-size: 0.9rem;
+            letter-spacing: 0.15em;
+            margin-bottom: 1rem;
+        }
+
+        .contact-info p {
+            font-size: 0.78rem;
+            color: var(--green-dim);
+            line-height: 1.9;
+            margin-bottom: 2rem;
+        }
+
+        .contact-method {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-top: 1px solid var(--border);
+            font-size: 0.75rem;
+        }
+
+        .contact-method:last-child {
+            border-bottom: 1px solid var(--border);
+        }
+
+        .c-icon {
+            font-size: 1.4rem;
+            flex-shrink: 0;
+        }
+
+        .c-label {
+            font-family: 'Orbitron', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.15em;
+            color: var(--green-dim);
+            margin-bottom: 0.2rem;
+        }
+
+        .c-val {
+            color: var(--green);
+            word-break: break-all;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.68rem;
+            letter-spacing: 0.2em;
+            color: var(--green-dim);
+            margin-bottom: 0.4rem;
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--green);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.8rem;
+            padding: 0.7rem 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+            appearance: none;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            border-color: var(--green);
+            box-shadow: 0 0 10px rgba(0, 255, 65, 0.1);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-select option {
+            background: var(--bg);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .pgp-box {
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+            margin-bottom: 3rem;
+            background: var(--bg2);
+            font-size: 0.72rem;
+            color: var(--green-dim);
+            line-height: 1.8;
+        }
+
+        .pgp-box h4 {
+            font-family: 'Orbitron', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            color: var(--green);
+            margin-bottom: 1rem;
+        }
+
+        .pgp-key {
+            font-size: 0.65rem;
+            color: var(--green-dim);
+            word-break: break-all;
+            line-height: 1.6;
+            border-top: 1px solid var(--border);
+            margin-top: 0.8rem;
+            padding-top: 0.8rem;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid var(--border);
+        }
+
+        .faq-q {
+            padding: 1rem 0;
+            font-size: 0.8rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: color 0.2s;
+        }
+
+        .faq-q:hover {
+            color: var(--cyan);
+        }
+
+        .faq-q::after {
+            content: '⊕';
+            font-size: 0.9rem;
+            color: var(--green-dim);
+            transition: transform 0.3s;
+        }
+
+        .faq-q.open::after {
+            content: '⊖';
+            color: var(--green);
+        }
+
+        .faq-a {
+            font-size: 0.75rem;
+            color: var(--green-dim);
+            line-height: 1.8;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.3s;
+        }
+
+        .faq-a.open {
+            max-height: 200px;
+            padding-bottom: 1rem;
+        }
+
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 3rem 0 2rem;
+            margin-top: 3rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-logo {
+            font-family: 'Orbitron', monospace;
+            font-weight: 900;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            letter-spacing: 0.15em;
+        }
+
+        .footer-logo span {
+            color: var(--red);
+        }
+
+        .footer-desc {
+            font-size: 0.75rem;
+            color: var(--green-dim);
+            line-height: 1.8;
+            max-width: 260px;
+        }
+
+        .footer-col h5 {
+            font-family: 'Orbitron', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            color: var(--green-dim);
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-col a {
+            font-size: 0.75rem;
+            color: var(--green-dim);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-col a:hover {
+            color: var(--green);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid var(--border);
+            padding-top: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.7rem;
+            color: var(--green-dim);
+            letter-spacing: 0.1em;
+        }
+
+        .footer-icons {
+            display: flex;
+            gap: 1rem;
+            font-size: 1rem;
+        }
+
+        .footer-icons span {
+            cursor: pointer;
+            transition: text-shadow 0.2s;
+        }
+
+        .footer-icons span:hover {
+            text-shadow: 0 0 10px var(--green);
+        }
+
+        #toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--bg2);
+            border: 1px solid var(--green);
+            color: var(--green);
+            padding: 0.8rem 1.5rem;
+            font-size: 0.78rem;
+            letter-spacing: 0.1em;
+            z-index: 1000;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s;
+        }
+
+        #toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
+        }
+
+        @keyframes flicker {
+
+            0%,
+            95%,
+            100% {
+                opacity: 1;
+            }
+
+            96% {
+                opacity: 0.4;
+            }
+
+            97% {
+                opacity: 1;
+            }
+
+            98% {
+                opacity: 0.3;
+            }
+
+            99% {
+                opacity: 1;
+            }
+        }
+
+        @keyframes glitch {
+
+            0%,
+            90%,
+            100% {
+                text-shadow: 0 0 40px var(--green), 0 0 80px var(--green-dark);
+                transform: none;
+            }
+
+            91% {
+                transform: translateX(-3px);
+                text-shadow: 3px 0 var(--red), -3px 0 var(--cyan);
+            }
+
+            92% {
+                transform: translateX(3px);
+                text-shadow: -3px 0 var(--red), 3px 0 var(--cyan);
+            }
+
+            93% {
+                transform: none;
+                text-shadow: 0 0 40px var(--green);
+            }
+        }
+
+        @keyframes scroll-left {
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(-50%);
+            }
+        }
+
+        @media (max-width: 900px) {
+
+            .service-grid,
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tools-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .tools-sidebar {
+                display: flex;
+                overflow-x: auto;
+                padding: 0;
+            }
+
+            .tools-cat {
+                display: none;
+            }
+
+            .tools-item {
+                white-space: nowrap;
+                border-left: none;
+                border-bottom: 2px solid transparent;
+            }
+
+            .tools-item.active {
+                border-left: none;
+                border-bottom-color: var(--green);
+            }
+
+            .contact-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .features {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .hero-stats {
+                gap: 1.5rem;
+            }
+
+            .banner {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <canvas id="matrix"></canvas>
+    <div id="toast"></div>
+
+    <nav>
+        <div class="container">
+            <div class="logo" onclick="showSection('home')">HACKED<span>.</span>S.A</div>
+            <ul class="nav-links">
+                <li><a href="#" onclick="showSection('home');return false;" id="nav-home" class="active">⌂ HOME</a></li>
+                <li><a href="#" onclick="showSection('store');return false;" id="nav-store">⬡ STORE</a></li>
+                <li><a href="#" onclick="showSection('services');return false;" id="nav-services">◈ SERVICES</a></li>
+                <li><a href="#" onclick="showSection('tools');return false;" id="nav-tools">⚙ TOOLS</a></li>
+                <li><a href="#" onclick="showSection('contact');return false;" id="nav-contact">✉ CONTACT</a></li>
+            </ul>
+            <div class="nav-right">
+                <span class="nav-icon">⌕</span>
+                <span class="nav-icon">⊙</span>
+                <span class="nav-icon" onclick="showSection('store');return false;">⊞<span
+                        id="cart-count">0</span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HOME -->
+    <div id="section-home" class="page-section active">
+        <section class="hero">
+            <div class="container">
+                <div class="hero-tag">▶ SYSTEM ONLINE // ACCESS GRANTED // v4.2.0</div>
+                <h1>Your <em>Digital</em><br>Arsenal<span style="color:var(--red)">_</span></h1>
+                <p class="hero-sub">⟁ Premium tools &amp; services for those who operate beyond the boundaries.
+                    Encrypted. Anonymous. Untraceable.</p>
+                <div class="hero-stats">
+                    <div><span class="stat-val">12K+</span>⬡ ACTIVE USERS</div>
+                    <div><span class="stat-val">99.9%</span>↑ UPTIME</div>
+                    <div><span class="stat-val">256</span>⌗ BIT ENCRYPTED</div>
+                </div>
+                <a href="#" class="btn" onclick="showSection('store');return false;"><span>⊳ ACCESS STORE</span></a>
+                <a href="#" class="btn btn-ghost" onclick="showSection('services');return false;"><span>◈ VIEW
+                        SERVICES</span></a>
+            </div>
+        </section>
+        <div class="ticker">
+            <div class="ticker-inner">
+                <span class="ticker-item"><span>▶</span> BTC: $84,210.33</span>
+                <span class="ticker-item"><span>▶</span> ETH: $3,891.20</span>
+                <span class="ticker-item"><span>▶</span> MONERO: $189.44</span>
+                <span class="ticker-item"><span>◈</span> NEW DROP: PHANTOM VPN PRO</span>
+                <span class="ticker-item"><span>⚠</span> FLASH SALE: 40% OFF PENTEST SUITE</span>
+                <span class="ticker-item"><span>⊙</span> 1,247 USERS ONLINE NOW</span>
+                <span class="ticker-item"><span>▶</span> BTC: $84,210.33</span>
+                <span class="ticker-item"><span>▶</span> ETH: $3,891.20</span>
+                <span class="ticker-item"><span>▶</span> MONERO: $189.44</span>
+                <span class="ticker-item"><span>◈</span> NEW DROP: PHANTOM VPN PRO</span>
+                <span class="ticker-item"><span>⚠</span> FLASH SALE: 40% OFF PENTEST SUITE</span>
+                <span class="ticker-item"><span>⊙</span> 1,247 USERS ONLINE NOW</span>
+            </div>
+        </div>
+        <section style="padding-bottom:5rem;">
+            <div class="container">
+                <div class="section-header"><span class="section-label">01</span>
+                    <h2>⬡ Featured Products</h2>
+                </div>
+                <div class="grid">
+                    <div class="card"><span class="card-badge badge-hot">◈ HOT</span><span class="card-icon">🛡</span>
+                        <h3>Phantom VPN Pro</h3>
+                        <p>⟁ Military-grade AES-256. No-log policy. 9000+ servers across 90 countries. Kill-switch
+                            enabled.</p>
+                        <div class="card-footer">
+                            <div><span class="price">$12.99<span class="price-old">$29.99</span></span></div><button
+                                class="add-btn" onclick="addToCart('Phantom VPN Pro')">⊕ ADD</button>
+                        </div>
+                    </div>
+                    <div class="card"><span class="card-badge badge-new">⊙ NEW</span><span class="card-icon">🔑</span>
+                        <h3>KeyVault Manager</h3>
+                        <p>⟁ Zero-knowledge password manager. Local encryption only. Cross-platform. Biometric auth.</p>
+                        <div class="card-footer">
+                            <div><span class="price">$8.49</span></div><button class="add-btn"
+                                onclick="addToCart('KeyVault Manager')">⊕ ADD</button>
+                        </div>
+                    </div>
+                    <div class="card"><span class="card-badge badge-sale">⬡ SALE</span><span class="card-icon">🔍</span>
+                        <h3>Recon Suite X</h3>
+                        <p>⟁ OSINT automation toolkit. Footprint scanning, dark web monitoring, breach detection.</p>
+                        <div class="card-footer">
+                            <div><span class="price">$34.00<span class="price-old">$59.00</span></span></div><button
+                                class="add-btn" onclick="addToCart('Recon Suite X')">⊕ ADD</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section style="padding-bottom:5rem;">
+            <div class="container">
+                <div class="section-header"><span class="section-label">02</span>
+                    <h2>⌗ Why Hacked S.A</h2>
+                </div>
+                <div class="terminal">
+                    <div class="terminal-bar"><span class="t-dot t-red"></span><span class="t-dot t-yellow"></span><span
+                            class="t-dot t-green"></span>&nbsp;&nbsp; root@hacked.sa ~ bash</div>
+                    <div class="terminal-body">
+                        <div class="t-line"><span class="t-prompt">root@hacked.sa:~$</span><span class="t-cmd">./verify
+                                --store hacked.sa</span></div>
+                        <div class="t-out">⟁ Checking encryption protocols...</div>
+                        <div class="t-success">✓ AES-256-GCM confirmed</div>
+                        <div class="t-out">⟁ Verifying payment anonymity...</div>
+                        <div class="t-success">✓ BTC / XMR / ETH accepted — no KYC</div>
+                        <div class="t-out">⟁ Auditing logs...</div>
+                        <div class="t-success">✓ Zero logs policy — independently verified</div>
+                        <div class="t-out">⟁ Uptime check...</div>
+                        <div class="t-success">✓ 99.97% SLA — redundant infrastructure</div>
+                        <div class="t-line"><span class="t-prompt">root@hacked.sa:~$</span><span class="cursor"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section style="padding-bottom:5rem;">
+            <div class="container">
+                <div class="section-header"><span class="section-label">03</span>
+                    <h2>⬡ Our Guarantees</h2>
+                </div>
+                <div class="features">
+                    <div class="feature"><span class="feature-icon">🔒</span>
+                        <h4>End-to-End Encrypted</h4>
+                        <p>All transactions and communications use military-grade encryption.</p>
+                    </div>
+                    <div class="feature"><span class="feature-icon">👁</span>
+                        <h4>Zero Logs</h4>
+                        <p>We store nothing. No purchase history. No IP. No identity.</p>
+                    </div>
+                    <div class="feature"><span class="feature-icon">₿</span>
+                        <h4>Crypto Payments</h4>
+                        <p>BTC, ETH, XMR accepted. No banks, no chargebacks, no KYC.</p>
+                    </div>
+                    <div class="feature"><span class="feature-icon">⚡</span>
+                        <h4>Instant Delivery</h4>
+                        <p>Digital licenses delivered to your encrypted inbox in seconds.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- STORE -->
+    <div id="section-store" class="page-section">
+        <div style="padding:4rem 0 0;">
+            <div class="container">
+                <div class="section-header"><span class="section-label">STORE</span>
+                    <h2>⬡ Product Catalog</h2>
+                </div>
+                <div class="filter-bar">
+                    <button class="filter-btn active" onclick="filterStore('all',this)">⊞ ALL</button>
+                    <button class="filter-btn" onclick="filterStore('vpn',this)">🛡 VPN &amp; PROXY</button>
+                    <button class="filter-btn" onclick="filterStore('osint',this)">🔍 OSINT</button>
+                    <button class="filter-btn" onclick="filterStore('crypto',this)">₿ CRYPTO</button>
+                    <button class="filter-btn" onclick="filterStore('comms',this)">📡 COMMS</button>
+                    <button class="filter-btn" onclick="filterStore('pentest',this)">⚙ PENTEST</button>
+                    <button class="filter-btn" onclick="filterStore('os',this)">💾 SYSTEMS</button>
+                </div>
+                <div class="grid" id="store-grid">
+                    <div class="card" data-cat="vpn"><span class="card-badge badge-hot">◈ HOT</span><span
+                            class="card-icon">🛡</span>
+                        <h3>Phantom VPN Pro</h3>
+                        <p>⟁ Military-grade AES-256 encryption. No-log policy. 9000+ servers, 90 countries. Kill-switch
+                            + split tunneling.</p>
+                        <div class="card-footer">
+                            <div><span class="price">$12.99<span class="price-old">$29.99</span></span></div><button
+                                class="add-btn" onclick="addToCart('Phantom VPN Pro')">⊕ ADD</button>
+                        </div>
+                    </div>
+                    <div class="card" data-cat="vpn"><span class="card-badge badge-new">⊙ NEW</span><span
+                            class="card-icon">🌀</span>
+                        <h3>ShadowProxy Elite</h3>
+                        <p>⟁ Residential proxy network. 50M+ IPs. Rotating &amp; sticky sessions. SOCKS5 + HTTP.
+                            Geo-targeting enabled.</p>
+                        <div class="card-footer">
+                            <div><span class="price">$19.99/mo</span></div><button class="add-btn"
+                                onclick="addToCart('ShadowProxy Elite')">⊕ ADD</button>
+                        </div>
+                    </div>
+                    <div class="card" data-cat="vpn"><span class="card-icon">🌐</span>
+                        <h3>Darknet Browser</h3>
+                        <p>⟁ Hardened Tor-based browser. Fingerprint spoofing. JS sandbox. DNS leak protection.
+                            Pre-configured.</p>
+                        <div class="card-footer">
+                            <div><span class="price">FREE</span></div><button class="add-btn"
+                                onclick="addToCart('Darknet Browser')">⊕ GET</button>
+                        </div>
+                    </div>
+                    <div class="card" data-cat="osint"><span class="card-badge badge-sale">⬡ SALE</span><span
+                            class="card-icon">🔍</span>
+                        <h3>Recon Suite X</h3>
+                        <p>⟁ OSINT automation toolkit. Footprint scanning, dark web monitoring, breach detection. CLI +
+                            GUI.</p>
+                        <div class="card-footer">
+                            <div><span class="price">$34.00<span class="price-old">$59.00</span></span></div><button
+                                class="add-btn" onclick="addToCart('Recon Suite X')">⊕ ADD</button>
+                        </div>
+                    </div>
+                    <div class="card" data-cat="osint"><span class="card-badge badge-new">⊙ NEW</span><span
+                            class="card-icon">🕵</span>
+                        <h3>GhostTrace Pro</h3>
+                        <p>⟁ Social engineering recon. Email harvesting, username enumeration, social graph mapping.
+                            REST API included.</p>
+                        <div class="card-footer">
+                            <div><span class="price">$27.00</span></div><button class="add-btn"
+                                onclick="addToCart('GhostTrace Pro')">⊕ ADD</button>
+                        </div>
+                    </div>
+                    <div class="card" data-cat="osint"><span class="card-icon">📰</span>
+                        <h3>DarkScan Monitor</h3>
+                        <p>⟁ 24/7 dark web surveillance. Breach alerts, credential leaks, data dumps. Dashboard + email
+                            alerts.</p>
+                        <div class="card-footer">
+                            <div><span class="price">$9.99/mo</span></div><button class="add-btn"
+                                onclick="addToCart('DarkScan Monitor')">⊕ ADD</button>
+                        </div>
+                    </div>
+                    <div class="card" data-cat="crypto"><span class="card-badge badge-pro">★ PRO</span><span
+                            class="card-icon">🔑</span>
+                        <h3>KeyVault Manager</h3>
+                        <p>⟁ Zero-knowledge password manager. Local encryption only. Cross-platform. USB key + biometric
+                            auth.</p>
+                        <div class="card-footer">
+                            <div><span class="price">$8.49</span></div><button class="add-btn"
+                                onclick="addToCart('KeyVault Manager')">⊕ ADD</button>
+                        </div>
+                    </div>
+                    <div class="card" data-cat="crypto"><span class="card-icon">💰</span>
+                        <h3>CryptoMixer SDK</h3>
+                        <p>⟁ Transaction obfuscation library. Multi-coin support. API-first. Integrate into your own
+                            workflow.</p>
+                        <div class="card-footer">
+                            <div><span class="price">$44.99</span></div><button class="add-btn"
+                                onclick="addToCart('CryptoMixer SDK')">⊕ ADD</button>
+                        </div>
+                    </div>
+                    <div class="card" data-cat="crypto"><span class="card-badge badge-new">⊙ NEW</span><span
+                            class="card-icon">🪙</span>
+                        <h3>WalletShield HD</h3>
+                        <p>⟁ Hardware wallet firmware. Open-source. Air-gap compatible. Supports BTC, ETH, XMR, 40+
+                            coins.</p>
+                        <div class="card-footer">
+                            <div><span class="price">$29.00</span></div><button class="add-btn"
+                                onclick="addToCart('WalletShield HD')">⊕ ADD</button>
+                        </div>
+                    </div>
+                    <div class="card" data-cat="comms"><span class="card-icon">📡</span>
+                        <h3>Signal Intercept</h3>
+                        <p>⟁ Encrypted communications platform. Self-destructing messages. Tor routing. Metadata
+                            stripping.</p>
+                        <div class="card-footer">
+                            <div><span class="price">$5.99/mo</span></div><button class="add-btn"
+                                onclick="addToCart('Signal Intercept')">⊕ ADD</button>
+                        </div>
+                    </div>
+                    <div class="card" data-cat="comms"><span class="card-badge badge-hot">◈ HOT</span><span
+                            class="card-icon">📻</span>
+                        <h3>VoidMail Relay</h3>
+                        <p>⟁ Anonymous email relay. Burn-after-send. PGP built-in. No registration. Custom domain
+                            support.</p>
+                        <div class="card-footer">
+                            <div><span class="price">$3.99/mo</span></div><button class="add-btn"
+                                onclick="addToCart('VoidMail Relay')">⊕ ADD</button>
+                        </div>
+                    </div>
+                    <div class="card" data-cat="comms"><span class="card-icon">🔏</span>
+                        <h3>DeadDrop SDK</h3>
+                        <p>⟁ Asynchronous dead-drop messaging system. E2E encrypted. Zero metadata. Server-side
+                            deletion.</p>
+                        <div class="card-footer">
+                            <div><span class="price">$18.00</span></div><button class="add-btn"
+                                onclick="addToCart('DeadDrop SDK')">⊕ ADD</button>
+                        </div>
+                    </div>
+                    <div class="card" data-cat="pentest"><span class="card-badge badge-hot">◈ HOT</span><span
+                            class="card-icon">⚙</span>
+                        <h3>PentestOS USB</h3>
+                        <p>⟁ Bootable live OS with 300+ pre-installed tools. Forensics, exploits, network analysis. 64GB
+                            encrypted.</p>
+                        <div class="card-footer">
+                            <div><span class="price">$49.99</span></div><button class="add-btn"
+                                onclick="addToCart('PentestOS USB')">⊕ ADD</button>
+                        </div>
+                    </div>
+                    <div class="card" data-cat="pentest"><span class="card-badge badge-sale">⬡ SALE</span><span
+                            class="card-icon">🕸</span>
+                        <h3>WebHunter Suite</h3>
+                        <p>⟁ Web vulnerability scanner. SQLi, XSS, SSRF, LFI detection. Crawler + fuzzer included.
+                            Active/passive modes.</p>
+                        <div class="card-footer">
+                            <div><span class="price">$39.00<span class="price-old">$65.00</span></span></div><button
+                                class="add-btn" onclick="addToCart('WebHunter Suite')">⊕ ADD</button>
+                        </div>
+                    </div>
+                    <div class="card" data-cat="pentest"><span class="card-icon">📶</span>
+                        <h3>NetStrike Pro</h3>
+                        <p>⟁ Network enumeration &amp; exploitation framework. Port scanning, CVE matcher, payload
+                            generator.</p>
+                        <div class="card-footer">
+                            <div><span class="price">$55.00</span></div><button class="add-btn"
+                                onclick="addToCart('NetStrike Pro')">⊕ ADD</button>
+                        </div>
+                    </div>
+                    <div class="card" data-cat="os"><span class="card-badge badge-new">⊙ NEW</span><span
+                            class="card-icon">💾</span>
+                        <h3>NullOS Minimal</h3>
+                        <p>⟁ Hardened Linux distro. Stripped kernel. No telemetry. RAM-only mode. Tor as default
+                            gateway.</p>
+                        <div class="card-footer">
+                            <div><span class="price">FREE</span></div><button class="add-btn"
+                                onclick="addToCart('NullOS Minimal')">⊕ GET</button>
+                        </div>
+                    </div>
+                    <div class="card" data-cat="os"><span class="card-icon">🖥</span>
+                        <h3>IronBSD Config</h3>
+                        <p>⟁ Pre-hardened OpenBSD config set. Firewall rules, encrypted swap, MAC policies, audit
+                            daemon.</p>
+                        <div class="card-footer">
+                            <div><span class="price">$14.99</span></div><button class="add-btn"
+                                onclick="addToCart('IronBSD Config')">⊕ ADD</button>
+                        </div>
+                    </div>
+                    <div class="card" data-cat="os"><span class="card-badge badge-pro">★ PRO</span><span
+                            class="card-icon">🔐</span>
+                        <h3>VaultVM Template</h3>
+                        <p>⟁ Disposable VM templates for Qubes OS. Auto-wipe on shutdown. Network isolation. App
+                            whitelisting.</p>
+                        <div class="card-footer">
+                            <div><span class="price">$22.00</span></div><button class="add-btn"
+                                onclick="addToCart('VaultVM Template')">⊕ ADD</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="banner" style="margin-top:1.5px;">
+                    <div>
+                        <h2>⚠ BUNDLE &amp; SAVE</h2>
+                        <p>⟁ Get the full Operator Stack — VPN Pro + KeyVault + Recon Suite X bundled at 60% off.
+                            Limited licenses. Payment via BTC / XMR only.</p>
+                        <br>
+                        <a href="#" class="btn btn-sm"
+                            onclick="addToCart('Operator Stack Bundle');return false;"><span>⊳ CLAIM BUNDLE —
+                                $39.99</span></a>
+                    </div>
+                    <div style="font-size:4rem;opacity:0.6;text-shadow:0 0 30px var(--green);">⬡</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SERVICES -->
+    <div id="section-services" class="page-section">
+        <div style="padding:4rem 0 0;">
+            <div class="container">
+                <div class="section-header"><span class="section-label">SERVICES</span>
+                    <h2>◈ What We Offer</h2>
+                </div>
+                <div class="service-grid">
+                    <div class="service-card" data-num="01"><span class="service-icon">🔒</span>
+                        <h3>Security Audits</h3>
+                        <p>⟁ Full-spectrum security assessments for your infrastructure, applications and personnel. We
+                            identify vulnerabilities before adversaries do. Delivered as a classified report with
+                            remediation roadmap.</p><span class="service-tag">Network</span><span
+                            class="service-tag">Web App</span><span class="service-tag">Social Eng.</span><span
+                            class="service-tag">Physical</span>
+                    </div>
+                    <div class="service-card" data-num="02"><span class="service-icon">🕵</span>
+                        <h3>Red Team Operations</h3>
+                        <p>⟁ Simulated adversarial attacks on your organization. Multi-vector, multi-stage engagements
+                            that mirror real threat actors. Full TTPs documentation and debrief included.</p><span
+                            class="service-tag">APT Simulation</span><span class="service-tag">C2
+                            Infrastructure</span><span class="service-tag">Exfil Testing</span>
+                    </div>
+                    <div class="service-card" data-num="03"><span class="service-icon">🌐</span>
+                        <h3>OSINT Research</h3>
+                        <p>⟁ Open-source intelligence gathering on individuals, companies or assets. Dark web
+                            monitoring, breach exposure analysis, digital footprint mapping. Fully deniable operations.
+                        </p><span class="service-tag">Corporate</span><span class="service-tag">Individual</span><span
+                            class="service-tag">Dark Web</span>
+                    </div>
+                    <div class="service-card" data-num="04"><span class="service-icon">⚙</span>
+                        <h3>Custom Tool Development</h3>
+                        <p>⟁ Bespoke offensive and defensive tooling built to your spec. Custom implants, C2 frameworks,
+                            automation scripts and evasion techniques. Delivered with full source and docs.</p><span
+                            class="service-tag">C / C++</span><span class="service-tag">Python</span><span
+                            class="service-tag">Go</span><span class="service-tag">Rust</span>
+                    </div>
+                    <div class="service-card" data-num="05"><span class="service-icon">🛡</span>
+                        <h3>Infrastructure Hardening</h3>
+                        <p>⟁ End-to-end lockdown of your servers, network and endpoints. OS hardening, firewall
+                            policies, IDS deployment, patch management and supply-chain risk review.</p><span
+                            class="service-tag">Linux</span><span class="service-tag">BSD</span><span
+                            class="service-tag">Cloud</span><span class="service-tag">On-Prem</span>
+                    </div>
+                    <div class="service-card" data-num="06"><span class="service-icon">📡</span>
+                        <h3>Secure Comms Setup</h3>
+                        <p>⟁ Design and deployment of encrypted communication infrastructure. Air-gapped networks,
+                            hardened VoIP, anonymous mail systems and secure file transfer pipelines.</p><span
+                            class="service-tag">E2E Encrypted</span><span class="service-tag">Air-Gap</span><span
+                            class="service-tag">Zero-Trust</span>
+                    </div>
+                </div>
+                <div class="section-header" style="margin-top:5rem;"><span class="section-label">PLANS</span>
+                    <h2>⌗ Service Tiers</h2>
+                </div>
+                <div class="pricing-grid">
+                    <div class="pricing-card">
+                        <div class="pricing-name">⊙ GHOST</div>
+                        <div class="pricing-price">$299</div>
+                        <div class="pricing-period">/ engagement</div>
+                        <ul class="pricing-features">
+                            <li>Basic vulnerability scan</li>
+                            <li>Web application audit</li>
+                            <li>PDF report + findings</li>
+                            <li>1 remediation session</li>
+                            <li class="na">Red team operation</li>
+                            <li class="na">Custom tooling</li>
+                            <li class="na">Retainer support</li>
+                        </ul>
+                        <a href="#" class="btn btn-sm" onclick="showSection('contact');return false;"><span>⊳ GET
+                                STARTED</span></a>
+                    </div>
+                    <div class="pricing-card featured">
+                        <div class="pricing-name">◈ OPERATOR</div>
+                        <div class="pricing-price">$999</div>
+                        <div class="pricing-period">/ engagement</div>
+                        <ul class="pricing-features">
+                            <li>Full infrastructure audit</li>
+                            <li>Web + API testing</li>
+                            <li>Encrypted report</li>
+                            <li>3 remediation sessions</li>
+                            <li>Red team (1 vector)</li>
+                            <li>2 custom scripts</li>
+                            <li class="na">Retainer support</li>
+                        </ul>
+                        <a href="#" class="btn btn-sm" onclick="showSection('contact');return false;"><span>⊳ GET
+                                STARTED</span></a>
+                    </div>
+                    <div class="pricing-card">
+                        <div class="pricing-name">⬡ PHANTOM</div>
+                        <div class="pricing-price">$4,999</div>
+                        <div class="pricing-period">/ engagement</div>
+                        <ul class="pricing-features">
+                            <li>Full-scope red team op</li>
+                            <li>OSINT + physical testing</li>
+                            <li>Classified debrief report</li>
+                            <li>Unlimited remediation</li>
+                            <li>Multi-vector red team</li>
+                            <li>Custom tooling included</li>
+                            <li>90-day retainer support</li>
+                        </ul>
+                        <a href="#" class="btn btn-sm" onclick="showSection('contact');return false;"><span>⊳ GET
+                                STARTED</span></a>
+                    </div>
+                </div>
+                <div class="terminal" style="margin-bottom:5rem;">
+                    <div class="terminal-bar"><span class="t-dot t-red"></span><span class="t-dot t-yellow"></span><span
+                            class="t-dot t-green"></span>&nbsp;&nbsp; root@hacked.sa ~ engagement-status</div>
+                    <div class="terminal-body">
+                        <div class="t-line"><span class="t-prompt">root@hacked.sa:~$</span><span class="t-cmd">./status
+                                --current-ops</span></div>
+                        <div class="t-out">⟁ Active engagements: <span style="color:var(--green)">7</span></div>
+                        <div class="t-out">⟁ Avg turnaround time: <span style="color:var(--green)">72 hrs</span></div>
+                        <div class="t-out">⟁ Client satisfaction rate: <span style="color:var(--green)">99.1%</span>
+                        </div>
+                        <div class="t-out">⟁ CVEs reported to date: <span style="color:var(--green)">312</span></div>
+                        <div class="t-out">⟁ Next available slot: <span style="color:var(--cyan)">2025-08-01</span>
+                        </div>
+                        <div class="t-line"><span class="t-prompt">root@hacked.sa:~$</span><span class="cursor"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOOLS -->
+    <div id="section-tools" class="page-section">
+        <div style="padding:4rem 0 0;">
+            <div class="container">
+                <div class="section-header"><span class="section-label">TOOLS</span>
+                    <h2>⚙ Free Toolkit</h2>
+                </div>
+                <p style="font-size:0.78rem;color:var(--green-dim);margin-bottom:2rem;line-height:1.8;">⟁ Browser-based
+                    utilities. No installation. No telemetry. All processing happens client-side — nothing leaves your
+                    machine.</p>
+                <div class="tools-layout">
+                    <div class="tools-sidebar">
+                        <div class="tools-cat">⬡ Network</div>
+                        <div class="tools-item active" onclick="showTool('ip',this)">🌐 IP Lookup</div>
+                        <div class="tools-item" onclick="showTool('dns',this)">📡 DNS Resolver</div>
+                        <div class="tools-cat">⬡ Crypto</div>
+                        <div class="tools-item" onclick="showTool('hash',this)">🔑 Hash Generator</div>
+                        <div class="tools-item" onclick="showTool('encode',this)">🔏 Base64 Encoder</div>
+                        <div class="tools-item" onclick="showTool('uuid',this)">⌗ UUID Generator</div>
+                        <div class="tools-cat">⬡ OSINT</div>
+                        <div class="tools-item" onclick="showTool('email',this)">📧 Email Inspector</div>
+                        <div class="tools-item" onclick="showTool('ua',this)">🕵 UA Parser</div>
+                        <div class="tools-cat">⬡ Misc</div>
+                        <div class="tools-item" onclick="showTool('pw',this)">🔒 Password Gen</div>
+                        <div class="tools-item" onclick="showTool('jwt',this)">📜 JWT Decoder</div>
+                    </div>
+                    <div class="tools-content">
+                        <div class="tool-panel active" id="tool-ip">
+                            <div class="tool-header"><span class="tool-big-icon">🌐</span>
+                                <div>
+                                    <h3>IP Lookup</h3>
+                                    <p>⟁ Retrieve geolocation, ASN, ISP and abuse contact for any IP address. Leave
+                                        blank to look up your own IP.</p>
+                                    <div class="tool-meta"><span>⊙ Type: <strong>Network</strong></span><span>🔒 Logs:
+                                            <strong>None</strong></span></div>
+                                </div>
+                            </div>
+                            <div class="form-group"><label class="form-label">⊳ TARGET IP ADDRESS</label>
+                                <div style="display:flex;gap:0;"><input class="form-input" id="ip-input"
+                                        placeholder="e.g. 8.8.8.8 — blank for your IP" style="flex:1;"><button
+                                        class="add-btn" style="white-space:nowrap;" onclick="runIPLookup()">⊳
+                                        LOOKUP</button></div>
+                            </div>
+                            <div class="tool-specs" id="ip-result" style="display:none;">
+                                <div class="tool-spec"><strong>IP Address</strong><span id="r-ip">—</span></div>
+                                <div class="tool-spec"><strong>Country</strong><span id="r-country">—</span></div>
+                                <div class="tool-spec"><strong>City / Region</strong><span id="r-city">—</span></div>
+                                <div class="tool-spec"><strong>ISP / ASN</strong><span id="r-isp">—</span></div>
+                                <div class="tool-spec"><strong>Timezone</strong><span id="r-tz">—</span></div>
+                                <div class="tool-spec"><strong>Coordinates</strong><span id="r-coords">—</span></div>
+                            </div>
+                        </div>
+                        <div class="tool-panel" id="tool-dns">
+                            <div class="tool-header"><span class="tool-big-icon">📡</span>
+                                <div>
+                                    <h3>DNS Resolver</h3>
+                                    <p>⟁ Query DNS records for any domain via Google DoH. Supports A, AAAA, MX, TXT, NS,
+                                        CNAME records.</p>
+                                    <div class="tool-meta"><span>⊙ Type: <strong>Network</strong></span><span>🔒 Logs:
+                                            <strong>None</strong></span></div>
+                                </div>
+                            </div>
+                            <div class="form-group"><label class="form-label">⊳ DOMAIN</label>
+                                <div style="display:flex;gap:0;"><input class="form-input" id="dns-input"
+                                        placeholder="e.g. example.com" style="flex:1;"><select class="form-select"
+                                        id="dns-type" style="width:100px;flex-shrink:0;">
+                                        <option>A</option>
+                                        <option>AAAA</option>
+                                        <option>MX</option>
+                                        <option>TXT</option>
+                                        <option>NS</option>
+                                        <option>CNAME</option>
+                                    </select><button class="add-btn" onclick="runDNS()">⊳ QUERY</button></div>
+                            </div>
+                            <div class="terminal" id="dns-result" style="display:none;">
+                                <div class="terminal-bar"><span class="t-dot t-green"></span>&nbsp; DNS Response</div>
+                                <div class="terminal-body" id="dns-output" style="line-height:1.8;font-size:0.75rem;">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tool-panel" id="tool-hash">
+                            <div class="tool-header"><span class="tool-big-icon">🔑</span>
+                                <div>
+                                    <h3>Hash Generator</h3>
+                                    <p>⟁ Generate cryptographic hashes using the Web Crypto API. Supports SHA-256,
+                                        SHA-384 and SHA-512. 100% local.</p>
+                                    <div class="tool-meta"><span>⊙ Type: <strong>Crypto</strong></span><span>⌗
+                                            Client-side: <strong>100%</strong></span></div>
+                                </div>
+                            </div>
+                            <div class="form-group"><label class="form-label">⊳ INPUT TEXT</label><textarea
+                                    class="form-textarea" id="hash-input" placeholder="Enter text to hash..."
+                                    style="min-height:80px;"></textarea></div>
+                            <div class="form-group"><label class="form-label">⊳ ALGORITHM</label><select
+                                    class="form-select" id="hash-algo">
+                                    <option value="SHA-256">SHA-256</option>
+                                    <option value="SHA-384">SHA-384</option>
+                                    <option value="SHA-512">SHA-512</option>
+                                </select></div>
+                            <button class="add-btn" style="margin-bottom:1.5rem;" onclick="runHash()">⊳ GENERATE
+                                HASH</button>
+                            <div class="tool-specs" id="hash-result" style="display:none;">
+                                <div class="tool-spec" style="grid-column:1/-1;"><strong
+                                        id="hash-algo-label">SHA-256</strong><span id="r-hash"
+                                        style="word-break:break-all;font-size:0.7rem;">—</span></div>
+                            </div>
+                        </div>
+                        <div class="tool-panel" id="tool-encode">
+                            <div class="tool-header"><span class="tool-big-icon">🔏</span>
+                                <div>
+                                    <h3>Base64 Encoder / Decoder</h3>
+                                    <p>⟁ Encode or decode Base64 strings instantly. All processing is local. Supports
+                                        standard and URL-safe variants.</p>
+                                    <div class="tool-meta"><span>⊙ Type: <strong>Crypto</strong></span><span>⌗
+                                            Client-side: <strong>100%</strong></span></div>
+                                </div>
+                            </div>
+                            <div class="form-group"><label class="form-label">⊳ INPUT</label><textarea
+                                    class="form-textarea" id="b64-input" placeholder="Enter text or Base64 string..."
+                                    style="min-height:100px;"></textarea></div>
+                            <div style="display:flex;gap:1rem;margin-bottom:1.5rem;"><button class="add-btn"
+                                    onclick="runB64('encode')">⊳ ENCODE</button><button class="add-btn"
+                                    onclick="runB64('decode')">⊳ DECODE</button></div>
+                            <div class="tool-specs" id="b64-result" style="display:none;">
+                                <div class="tool-spec" style="grid-column:1/-1;"><strong
+                                        id="b64-label">OUTPUT</strong><span id="r-b64"
+                                        style="word-break:break-all;font-size:0.7rem;">—</span></div>
+                            </div>
+                        </div>
+                        <div class="tool-panel" id="tool-uuid">
+                            <div class="tool-header"><span class="tool-big-icon">⌗</span>
+                                <div>
+                                    <h3>UUID Generator</h3>
+                                    <p>⟁ Generate cryptographically random UUIDs (v4) in bulk using the Web Crypto API.
+                                        No server involved.</p>
+                                    <div class="tool-meta"><span>⊙ Type: <strong>Crypto</strong></span><span>⌗
+                                            Client-side: <strong>100%</strong></span></div>
+                                </div>
+                            </div>
+                            <div class="form-group"><label class="form-label">⊳ COUNT (1–20)</label><input
+                                    class="form-input" id="uuid-count" type="number" min="1" max="20" value="5"></div>
+                            <button class="add-btn" style="margin-bottom:1.5rem;" onclick="runUUID()">⊳
+                                GENERATE</button>
+                            <div class="terminal" id="uuid-result" style="display:none;">
+                                <div class="terminal-bar"><span class="t-dot t-green"></span>&nbsp; UUIDs</div>
+                                <div class="terminal-body" id="uuid-output" style="line-height:1.8;"></div>
+                            </div>
+                        </div>
+                        <div class="tool-panel" id="tool-email">
+                            <div class="tool-header"><span class="tool-big-icon">📧</span>
+                                <div>
+                                    <h3>Email Inspector</h3>
+                                    <p>⟁ Validate email syntax and identify disposable or free-tier providers. Quick
+                                        recon for threat analysis.</p>
+                                    <div class="tool-meta"><span>⊙ Type: <strong>OSINT</strong></span><span>⌗
+                                            Client-side: <strong>100%</strong></span></div>
+                                </div>
+                            </div>
+                            <div class="form-group"><label class="form-label">⊳ EMAIL ADDRESS</label>
+                                <div style="display:flex;gap:0;"><input class="form-input" id="email-input"
+                                        placeholder="target@domain.com" style="flex:1;"><button class="add-btn"
+                                        onclick="runEmailCheck()">⊳ INSPECT</button></div>
+                            </div>
+                            <div class="tool-specs" id="email-result" style="display:none;">
+                                <div class="tool-spec"><strong>Syntax Valid</strong><span id="r-email-syntax">—</span>
+                                </div>
+                                <div class="tool-spec"><strong>Domain</strong><span id="r-email-domain">—</span></div>
+                                <div class="tool-spec"><strong>Provider Type</strong><span id="r-email-type">—</span>
+                                </div>
+                                <div class="tool-spec"><strong>TLD</strong><span id="r-email-tld">—</span></div>
+                            </div>
+                        </div>
+                        <div class="tool-panel" id="tool-ua">
+                            <div class="tool-header"><span class="tool-big-icon">🕵</span>
+                                <div>
+                                    <h3>User-Agent Parser</h3>
+                                    <p>⟁ Decompose a User-Agent string into browser, OS, engine and device type. Leave
+                                        blank to use your own.</p>
+                                    <div class="tool-meta"><span>⊙ Type: <strong>OSINT</strong></span><span>⌗
+                                            Client-side: <strong>100%</strong></span></div>
+                                </div>
+                            </div>
+                            <div class="form-group"><label class="form-label">⊳ USER-AGENT STRING</label><input
+                                    class="form-input" id="ua-input" placeholder="Leave blank to use your current UA">
+                            </div>
+                            <button class="add-btn" style="margin-bottom:1.5rem;" onclick="runUA()">⊳ PARSE</button>
+                            <div class="tool-specs" id="ua-result" style="display:none;">
+                                <div class="tool-spec"><strong>Browser</strong><span id="r-ua-browser">—</span></div>
+                                <div class="tool-spec"><strong>OS</strong><span id="r-ua-os">—</span></div>
+                                <div class="tool-spec"><strong>Engine</strong><span id="r-ua-engine">—</span></div>
+                                <div class="tool-spec"><strong>Device</strong><span id="r-ua-device">—</span></div>
+                                <div class="tool-spec" style="grid-column:1/-1;"><strong>Full UA</strong><span
+                                        id="r-ua-full" style="word-break:break-all;font-size:0.68rem;">—</span></div>
+                            </div>
+                        </div>
+                        <div class="tool-panel" id="tool-pw">
+                            <div class="tool-header"><span class="tool-big-icon">🔒</span>
+                                <div>
+                                    <h3>Password Generator</h3>
+                                    <p>⟁ Generate strong random passwords with configurable complexity using Web Crypto.
+                                        100% local.</p>
+                                    <div class="tool-meta"><span>⊙ Type: <strong>Misc</strong></span><span>⌗
+                                            Client-side: <strong>100%</strong></span></div>
+                                </div>
+                            </div>
+                            <div class="form-row" style="margin-bottom:1rem;">
+                                <div class="form-group"><label class="form-label">⊳ LENGTH</label><input
+                                        class="form-input" id="pw-length" type="number" min="8" max="128" value="24">
+                                </div>
+                                <div class="form-group"><label class="form-label">⊳ COUNT</label><input
+                                        class="form-input" id="pw-count" type="number" min="1" max="10" value="5"></div>
+                            </div>
+                            <div style="display:flex;gap:1.5rem;margin-bottom:1.5rem;font-size:0.75rem;flex-wrap:wrap;">
+                                <label style="display:flex;gap:0.5rem;align-items:center;cursor:pointer;"><input
+                                        type="checkbox" id="pw-upper" checked> UPPERCASE</label>
+                                <label style="display:flex;gap:0.5rem;align-items:center;cursor:pointer;"><input
+                                        type="checkbox" id="pw-lower" checked> lowercase</label>
+                                <label style="display:flex;gap:0.5rem;align-items:center;cursor:pointer;"><input
+                                        type="checkbox" id="pw-num" checked> 0-9</label>
+                                <label style="display:flex;gap:0.5rem;align-items:center;cursor:pointer;"><input
+                                        type="checkbox" id="pw-sym" checked> !@#$</label>
+                            </div>
+                            <button class="add-btn" style="margin-bottom:1.5rem;" onclick="runPW()">⊳ GENERATE</button>
+                            <div class="terminal" id="pw-result" style="display:none;">
+                                <div class="terminal-bar"><span class="t-dot t-green"></span>&nbsp; Passwords</div>
+                                <div class="terminal-body" id="pw-output" style="line-height:2;"></div>
+                            </div>
+                        </div>
+                        <div class="tool-panel" id="tool-jwt">
+                            <div class="tool-header"><span class="tool-big-icon">📜</span>
+                                <div>
+                                    <h3>JWT Decoder</h3>
+                                    <p>⟁ Decode and inspect JWT tokens without verification. Reveals header and payload
+                                        components. Client-side only.</p>
+                                    <div class="tool-meta"><span>⊙ Type: <strong>Misc</strong></span><span>⌗
+                                            Client-side: <strong>100%</strong></span></div>
+                                </div>
+                            </div>
+                            <div class="form-group"><label class="form-label">⊳ JWT TOKEN</label><textarea
+                                    class="form-textarea" id="jwt-input" placeholder="Paste JWT token here..."
+                                    style="min-height:80px;"></textarea></div>
+                            <button class="add-btn" style="margin-bottom:1.5rem;" onclick="runJWT()">⊳ DECODE</button>
+                            <div id="jwt-result" style="display:none;">
+                                <div class="terminal">
+                                    <div class="terminal-bar"><span class="t-dot t-green"></span>&nbsp; Header</div>
+                                    <div class="terminal-body">
+                                        <pre id="jwt-header"
+                                            style="font-size:0.72rem;white-space:pre-wrap;word-break:break-all;color:var(--cyan);"></pre>
+                                    </div>
+                                </div>
+                                <div class="terminal" style="margin-top:1.5px;">
+                                    <div class="terminal-bar"><span class="t-dot t-yellow"></span>&nbsp; Payload</div>
+                                    <div class="terminal-body">
+                                        <pre id="jwt-payload"
+                                            style="font-size:0.72rem;white-space:pre-wrap;word-break:break-all;color:var(--green);"></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="banner" style="margin-bottom:5rem;">
+                    <div>
+                        <h2>⚙ NEED MORE POWER?</h2>
+                        <p>⟁ These browser tools are just a taste. The full toolkit — network scanners, exploitation
+                            frameworks, forensic suites — is in our store. No limitations.</p>
+                        <br>
+                        <a href="#" class="btn btn-sm" onclick="showSection('store');return false;"><span>⊳ BROWSE FULL
+                                TOOLKIT</span></a>
+                    </div>
+                    <div style="font-size:4rem;opacity:0.6;text-shadow:0 0 30px var(--green);">⚙</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTACT -->
+    <div id="section-contact" class="page-section">
+        <div style="padding:4rem 0 0;">
+            <div class="container">
+                <div class="section-header"><span class="section-label">CONTACT</span>
+                    <h2>✉ Get In Touch</h2>
+                </div>
+                <div class="contact-layout">
+                    <div class="contact-info">
+                        <h3>⟁ Secure Channels</h3>
+                        <p>⟁ All communications are end-to-end encrypted. We do not log, trace or retain any message
+                            metadata. For maximum anonymity, use our Tor .onion address or contact via Session ID.</p>
+                        <div class="contact-method"><span class="c-icon">✈</span>
+                            <div>
+                                <div class="c-label">TELEGRAM</div>
+                                <div class="c-val">@hacked_sa_official</div>
+                            </div>
+                        </div>
+                        <div class="contact-method"><span class="c-icon">⊙</span>
+                            <div>
+                                <div class="c-label">SESSION ID</div>
+                                <div class="c-val">05a3b2c1d4e5f6789012345678901234567890abcdef</div>
+                            </div>
+                        </div>
+                        <div class="contact-method"><span class="c-icon">📧</span>
+                            <div>
+                                <div class="c-label">ENCRYPTED MAIL</div>
+                                <div class="c-val">ops@hacked.sa (PGP required)</div>
+                            </div>
+                        </div>
+                        <div class="contact-method"><span class="c-icon">🌐</span>
+                            <div>
+                                <div class="c-label">TOR HIDDEN SERVICE</div>
+                                <div class="c-val">hackedxxx4k2mq3r.onion</div>
+                            </div>
+                        </div>
+                        <div class="contact-method"><span class="c-icon">⌗</span>
+                            <div>
+                                <div class="c-label">MATRIX</div>
+                                <div class="c-val">@opsec:hacked.sa</div>
+                            </div>
+                        </div>
+                        <div style="margin-top:2rem;">
+                            <div class="terminal">
+                                <div class="terminal-bar"><span class="t-dot t-red"></span><span
+                                        class="t-dot t-yellow"></span><span class="t-dot t-green"></span>&nbsp;&nbsp;
+                                    response-time</div>
+                                <div class="terminal-body" style="font-size:0.75rem;">
+                                    <div class="t-out">⟁ General inquiries: <span style="color:var(--green)">24–48
+                                            hrs</span></div>
+                                    <div class="t-out">⟁ Service quotes: <span style="color:var(--green)">12–24
+                                            hrs</span></div>
+                                    <div class="t-out">⟁ Emergency opsec: <span style="color:var(--cyan)">2–4 hrs</span>
+                                    </div>
+                                    <div class="t-out">⟁ Telegram (fastest): <span style="color:var(--green)">~1
+                                            hr</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="contact-form-wrap">
+                        <h3
+                            style="font-family:'Orbitron',monospace;font-size:0.9rem;letter-spacing:0.15em;margin-bottom:1.5rem;">
+                            ⊳ Send Encrypted Message</h3>
+                        <div class="form-row">
+                            <div class="form-group"><label class="form-label">⊳ HANDLE / ALIAS</label><input
+                                    class="form-input" placeholder="anonymous_user"></div>
+                            <div class="form-group"><label class="form-label">⊳ CONTACT METHOD</label><input
+                                    class="form-input" placeholder="Telegram / Session / Mail"></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">⊳ SUBJECT / OPERATION TYPE</label>
+                            <select class="form-select">
+                                <option>— SELECT CATEGORY —</option>
+                                <option>Product Support</option>
+                                <option>Service Inquiry</option>
+                                <option>Red Team Quote</option>
+                                <option>Custom Tool Request</option>
+                                <option>Bug Report / Vulnerability</option>
+                                <option>Partnership</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group"><label class="form-label">⊳ MESSAGE (PGP ENCRYPT IF
+                                SENSITIVE)</label><textarea class="form-textarea"
+                                placeholder="Describe your inquiry. For sensitive operations, encrypt this message with our PGP key before pasting."
+                                style="min-height:160px;"></textarea></div>
+                        <div class="form-group"
+                            style="font-size:0.72rem;color:var(--green-dim);display:flex;gap:0.5rem;align-items:flex-start;">
+                            <input type="checkbox" id="anon-check" style="margin-top:2px;flex-shrink:0;"><label
+                                for="anon-check">⟁ I understand this form does not guarantee anonymity. For sensitive
+                                operations I will use Tor and encrypt my message with the PGP key below.</label></div>
+                        <button class="btn btn-sm"
+                            onclick="showToast('✓ Message queued for delivery via secure relay.')"><span>⊳ TRANSMIT
+                                MESSAGE</span></button>
+                    </div>
+                </div>
+                <div class="pgp-box">
+                    <h4>⌗ OUR PGP PUBLIC KEY</h4>
+                    <p>Use this key to encrypt sensitive messages before sending via any channel. Fingerprint: <span
+                            style="color:var(--green);">A1B2 C3D4 E5F6 7890 ABCD EF01 2345 6789 0ABC DEF0</span></p>
+                    <div class="pgp-key">
+                        -----BEGIN PGP PUBLIC KEY BLOCK-----<br>
+                        mQINBGXk3b4BEADRt2v7Qq8mNpKL4f6GhWzXcYeP3sJmTnVu9iAoDw1bCkEx<br>
+                        FakeKeyDataForDisplayPurposesOnlyThisIsNotARealPGPKeyJustAMockup<br>
+                        Hacked.SA.Operations.2025.AES256.RSA4096.NoLogsNoTracesNoRegrets<br>
+                        ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/<br>
+                        ZWQgZW5jcnlwdGVkIGNvbW11bmljYXRpb25zIG9ubHkuIFN0YXkgc2FmZS4=<br>
+                        =xK9p<br>
+                        -----END PGP PUBLIC KEY BLOCK-----
+                    </div>
+                </div>
+                <div class="section-header" style="margin-top:4rem;"><span class="section-label">FAQ</span>
+                    <h2>⬡ Common Questions</h2>
+                </div>
+                <div style="margin-bottom:5rem;">
+                    <div class="faq-item">
+                        <div class="faq-q" onclick="toggleFaq(this)">Do you store any customer information?</div>
+                        <div class="faq-a">⟁ No. We operate a strict zero-log policy. No IP addresses, purchase history,
+                            account activity or communication metadata is stored on our servers. Payments via XMR are
+                            fully untraceable by design.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-q" onclick="toggleFaq(this)">What payment methods do you accept?</div>
+                        <div class="faq-a">⟁ We accept Bitcoin (BTC), Ethereum (ETH) and Monero (XMR). We strongly
+                            recommend XMR for maximum anonymity. No fiat, no credit cards, no PayPal — ever.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-q" onclick="toggleFaq(this)">How are digital products delivered?</div>
+                        <div class="faq-a">⟁ After payment confirmation (typically 1–3 blockchain confirmations),
+                            download links are generated and accessible from your account dashboard. Links expire after
+                            72 hours and are single-use.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-q" onclick="toggleFaq(this)">Can I get a refund?</div>
+                        <div class="faq-a">⟁ Due to the digital nature of our products, refunds are not issued once a
+                            license key or download link has been accessed. For service engagements, partial refunds may
+                            be negotiated before work begins.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-q" onclick="toggleFaq(this)">Are your services legal?</div>
+                        <div class="faq-a">⟁ Our tools and services are designed for legitimate security research and
+                            penetration testing with explicit written authorization. Misuse is the sole responsibility
+                            of the purchaser. Know your local laws.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-q" onclick="toggleFaq(this)">How do I report a vulnerability in your platform?
+                        </div>
+                        <div class="faq-a">⟁ Encrypt your report with our PGP key and send it to ops@hacked.sa with
+                            subject line [VDP]. We run a private responsible disclosure program. Researchers who report
+                            critical vulnerabilities may receive compensation in XMR.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <div class="footer-logo">HACKED<span>.</span>S.A</div>
+                    <p class="footer-desc">⟁ The underground marketplace for digital security tools and privacy
+                        services. Operating since 2019. Anonymous. Encrypted. Trusted.</p>
+                </div>
+                <div class="footer-col">
+                    <h5>⬡ Store</h5>
+                    <ul>
+                        <li><a href="#" onclick="showSection('store');return false;">VPN &amp; Proxy</a></li>
+                        <li><a href="#" onclick="showSection('store');return false;">OSINT Tools</a></li>
+                        <li><a href="#" onclick="showSection('store');return false;">Pentest Kits</a></li>
+                        <li><a href="#" onclick="showSection('store');return false;">Crypto Tools</a></li>
+                        <li><a href="#" onclick="showSection('store');return false;">Bundles</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h5>◈ Services</h5>
+                    <ul>
+                        <li><a href="#" onclick="showSection('services');return false;">Security Audits</a></li>
+                        <li><a href="#" onclick="showSection('services');return false;">Red Team Ops</a></li>
+                        <li><a href="#" onclick="showSection('services');return false;">OSINT Research</a></li>
+                        <li><a href="#" onclick="showSection('services');return false;">Custom Tools</a></li>
+                        <li><a href="#" onclick="showSection('services');return false;">Pricing</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h5>⌗ Info</h5>
+                    <ul>
+                        <li><a href="#" onclick="showSection('tools');return false;">Free Tools</a></li>
+                        <li><a href="#" onclick="showSection('contact');return false;">Contact</a></li>
+                        <li><a href="#">PGP Key</a></li>
+                        <li><a href="#">Warrant Canary</a></li>
+                        <li><a href="#">Tor Mirror</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>© 2025 HACKED.S.A — ALL RIGHTS RESERVED // STAY ANONYMOUS</span>
+                <div class="footer-icons">
+                    <span title="Telegram">✈</span>
+                    <span title="Matrix">⊞</span>
+                    <span title="Session">⊙</span>
+                    <span title="Github">⌗</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // MATRIX
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()⬡⊙⊞⌗⟁◈⊳';
+        const fontSize = 13;
+        const drops = Array(Math.floor(canvas.width / fontSize)).fill(1);
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(2,12,2,0.05)'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#00ff41'; ctx.font = fontSize + 'px Share Tech Mono';
+            drops.forEach((y, i) => {
+                ctx.fillText(chars[Math.floor(Math.random() * chars.length)], i * fontSize, y * fontSize);
+                if (y * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            });
+        }
+        setInterval(drawMatrix, 50);
+        window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+
+        // SECTIONS
+        function showSection(id) {
+            document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+            document.getElementById('section-' + id).classList.add('active');
+            const el = document.getElementById('nav-' + id);
+            if (el) el.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // CART
+        let cartCount = 0;
+        function addToCart(name) {
+            cartCount++;
+            document.getElementById('cart-count').textContent = cartCount;
+            showToast('⊕ Added: ' + name);
+        }
+
+        // TOAST
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.textContent = msg; t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 3000);
+        }
+
+        // STORE FILTER
+        function filterStore(cat, btn) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.querySelectorAll('#store-grid .card').forEach(card => {
+                card.style.display = (cat === 'all' || card.dataset.cat === cat) ? '' : 'none';
+            });
+        }
+
+        // TOOLS PANEL
+        function showTool(id, el) {
+            document.querySelectorAll('.tool-panel').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.tools-item').forEach(i => i.classList.remove('active'));
+            document.getElementById('tool-' + id).classList.add('active');
+            if (el) el.classList.add('active');
+        }
+
+        // IP LOOKUP
+        async function runIPLookup() {
+            const ip = document.getElementById('ip-input').value.trim();
+            const url = ip ? `https://ipapi.co/${ip}/json/` : 'https://ipapi.co/json/';
+            try {
+                const d = await (await fetch(url)).json();
+                document.getElementById('r-ip').textContent = d.ip || '—';
+                document.getElementById('r-country').textContent = (d.country_name || '—') + ' ' + (d.country_code || '');
+                document.getElementById('r-city').textContent = (d.city || '—') + ', ' + (d.region || '—');
+                document.getElementById('r-isp').textContent = d.org || '—';
+                document.getElementById('r-tz').textContent = d.timezone || '—';
+                document.getElementById('r-coords').textContent = d.latitude + ', ' + d.longitude;
+                document.getElementById('ip-result').style.display = 'grid';
+            } catch (e) { showToast('⚠ Lookup failed'); }
+        }
+
+        // HASH
+        async function runHash() {
+            const text = document.getElementById('hash-input').value;
+            const algo = document.getElementById('hash-algo').value;
+            if (!text) { showToast('⚠ Enter text to hash'); return; }
+            const buf = await crypto.subtle.digest(algo, new TextEncoder().encode(text));
+            const hex = Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+            document.getElementById('hash-algo-label').textContent = algo;
+            document.getElementById('r-hash').textContent = hex;
+            document.getElementById('hash-result').style.display = 'grid';
+        }
+
+        // BASE64
+        function runB64(mode) {
+            const input = document.getElementById('b64-input').value;
+            if (!input) { showToast('⚠ Enter input text'); return; }
+            let out;
+            try { out = mode === 'encode' ? btoa(unescape(encodeURIComponent(input))) : decodeURIComponent(escape(atob(input))); }
+            catch (e) { showToast('⚠ Invalid input for ' + mode); return; }
+            document.getElementById('b64-label').textContent = mode === 'encode' ? 'BASE64 ENCODED' : 'DECODED OUTPUT';
+            document.getElementById('r-b64').textContent = out;
+            document.getElementById('b64-result').style.display = 'grid';
+        }
+
+        // UUID
+        function runUUID() {
+            const count = Math.min(20, Math.max(1, parseInt(document.getElementById('uuid-count').value) || 5));
+            const uuids = Array.from({ length: count }, () => crypto.randomUUID());
+            document.getElementById('uuid-output').innerHTML = uuids.map(u => `<div style="color:var(--green);">${u}</div>`).join('');
+            document.getElementById('uuid-result').style.display = 'block';
+        }
+
+        // PASSWORD
+        function runPW() {
+            const len = Math.min(128, Math.max(8, parseInt(document.getElementById('pw-length').value) || 24));
+            const count = Math.min(10, Math.max(1, parseInt(document.getElementById('pw-count').value) || 5));
+            let ch = '';
+            if (document.getElementById('pw-upper').checked) ch += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            if (document.getElementById('pw-lower').checked) ch += 'abcdefghijklmnopqrstuvwxyz';
+            if (document.getElementById('pw-num').checked) ch += '0123456789';
+            if (document.getElementById('pw-sym').checked) ch += '!@#$%^&*()-_=+[]{}|;:,.<>?';
+            if (!ch) { showToast('⚠ Select at least one character set'); return; }
+            const arr = new Uint32Array(len * count);
+            crypto.getRandomValues(arr);
+            const pws = Array.from({ length: count }, (_, i) => Array.from({ length: len }, (_, j) => ch[arr[i * len + j] % ch.length]).join(''));
+            document.getElementById('pw-output').innerHTML = pws.map(p => `<div style="color:var(--green);letter-spacing:0.06em;">${p}</div>`).join('');
+            document.getElementById('pw-result').style.display = 'block';
+        }
+
+        // JWT
+        function runJWT() {
+            const token = document.getElementById('jwt-input').value.trim();
+            if (!token) { showToast('⚠ Paste a JWT token'); return; }
+            const parts = token.split('.');
+            if (parts.length < 2) { showToast('⚠ Invalid JWT format'); return; }
+            try {
+                const decode = s => JSON.parse(atob(s.replace(/-/g, '+').replace(/_/g, '/')));
+                document.getElementById('jwt-header').textContent = JSON.stringify(decode(parts[0]), null, 2);
+                document.getElementById('jwt-payload').textContent = JSON.stringify(decode(parts[1]), null, 2);
+                document.getElementById('jwt-result').style.display = 'block';
+            } catch (e) { showToast('⚠ Failed to decode JWT'); }
+        }
+
+        // DNS
+        async function runDNS() {
+            const domain = document.getElementById('dns-input').value.trim();
+            const type = document.getElementById('dns-type').value;
+            if (!domain) { showToast('⚠ Enter a domain'); return; }
+            try {
+                const d = await (await fetch(`https://dns.google/resolve?name=${domain}&type=${type}`)).json();
+                const out = document.getElementById('dns-output');
+                out.innerHTML = d.Answer && d.Answer.length
+                    ? d.Answer.map(a => `<div><span style="color:var(--green);">${a.name}</span> <span style="color:var(--cyan);">${type}</span> <span>${a.data}</span> <span style="color:var(--green-dim);">TTL:${a.TTL}</span></div>`).join('')
+                    : `<div class="t-error">✕ No ${type} records found for ${domain}</div>`;
+                document.getElementById('dns-result').style.display = 'block';
+            } catch (e) { showToast('⚠ DNS query failed'); }
+        }
+
+        // EMAIL
+        function runEmailCheck() {
+            const email = document.getElementById('email-input').value.trim();
+            if (!email) { showToast('⚠ Enter an email address'); return; }
+            const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+            const domain = (email.split('@')[1] || '').toLowerCase();
+            const tld = domain.split('.').pop();
+            const domainBase = domain.split('.')[0];
+            const free = ['gmail', 'yahoo', 'hotmail', 'outlook', 'protonmail', 'tutanota', 'icloud', 'aol', 'zoho', 'yandex'];
+            const disp = ['mailinator', 'guerrillamail', '10minutemail', 'trashmail', 'tempmail', 'yopmail'];
+            let type = disp.some(d => domain.includes(d)) ? '⚠ Disposable' : free.includes(domainBase) ? 'Free Provider' : 'Custom / Corporate';
+            const synEl = document.getElementById('r-email-syntax');
+            synEl.textContent = valid ? '✓ Valid' : '✕ Invalid';
+            synEl.style.color = valid ? 'var(--green)' : 'var(--red)';
+            document.getElementById('r-email-domain').textContent = domain || '—';
+            document.getElementById('r-email-type').textContent = type;
+            document.getElementById('r-email-tld').textContent = '.' + tld;
+            document.getElementById('email-result').style.display = 'grid';
+        }
+
+        // UA PARSER
+        function runUA() {
+            const ua = document.getElementById('ua-input').value.trim() || navigator.userAgent;
+            const getBrowser = u => { if (/Edg\//.test(u)) return 'Edge'; if (/OPR\//.test(u)) return 'Opera'; if (/Chrome\//.test(u)) return 'Chrome ' + (u.match(/Chrome\/([\d.]+)/) || [])[1]; if (/Firefox\//.test(u)) return 'Firefox ' + (u.match(/Firefox\/([\d.]+)/) || [])[1]; if (/Safari\//.test(u)) return 'Safari'; return 'Unknown'; };
+            const getOS = u => { if (/Windows NT 10/.test(u)) return 'Windows 10/11'; if (/Windows NT 6.1/.test(u)) return 'Windows 7'; if (/Mac OS X/.test(u)) return 'macOS ' + (u.match(/Mac OS X ([\d_]+)/) || ['', ''])[1].replace(/_/g, '.'); if (/Android/.test(u)) return 'Android ' + (u.match(/Android ([\d.]+)/) || ['', ''])[1]; if (/Linux/.test(u)) return 'Linux'; if (/iPhone|iPad/.test(u)) return 'iOS'; return 'Unknown'; };
+            const getEngine = u => /Gecko\//.test(u) && !/WebKit/.test(u) ? 'Gecko' : /AppleWebKit\//.test(u) ? 'WebKit / Blink' : 'Unknown';
+            const getDevice = u => /Mobile/.test(u) ? '📱 Mobile' : /Tablet|iPad/.test(u) ? '📟 Tablet' : '🖥 Desktop';
+            document.getElementById('r-ua-browser').textContent = getBrowser(ua);
+            document.getElementById('r-ua-os').textContent = getOS(ua);
+            document.getElementById('r-ua-engine').textContent = getEngine(ua);
+            document.getElementById('r-ua-device').textContent = getDevice(ua);
+            document.getElementById('r-ua-full').textContent = ua;
+            document.getElementById('ua-result').style.display = 'grid';
+        }
+
+        // FAQ
+        function toggleFaq(el) {
+            const ans = el.nextElementSibling;
+            const isOpen = ans.classList.contains('open');
+            document.querySelectorAll('.faq-a').forEach(a => a.classList.remove('open'));
+            document.querySelectorAll('.faq-q').forEach(q => q.classList.remove('open'));
+            if (!isOpen) { ans.classList.add('open'); el.classList.add('open'); }
+        }
+    </script>
+</body>
+
+</html>

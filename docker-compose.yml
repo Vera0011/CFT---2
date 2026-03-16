@@ -1,48 +1,72 @@
 services:
   bastion:
     image: vera-bastion-image:latest
+    container_name: vera-bastion
     build:
       context: machines/bastion
       dockerfile: Dockerfile
     hostname: vera-bastion
     volumes:
-      - ./flags/flag1:/flag
+      - ./flags/flag1.txt:/usr/share/nginx/html/.git
     ports:
-      - 8080:80
+      - 80
+      - 443
+      - 22
+    cap_add:
+      - NET_ADMIN
     networks:
-      - public_net
-      - private_net
+      public_net:
+        ipv4_address: 172.18.0.2
+        interface_name: eth0
+      private_net:
+        ipv4_address: 192.168.10.2
+        interface_name: eth1
+    #depends_on:
+    #  backups:
+    #    condition: service_started
 
-  backups:
-    image: vera-backups-image:latest
-    build:
-      context: machines/backups
-      dockerfile: Dockerfile
-    hostname: vera-backups
-    volumes:
-      - ./flags/flag2:/flag
-    ports:
-      - 22:22
-      - 21:21
-    networks:
-      - private_net
-
-  smtp:
-    image: vera-smtp-image:latest
-    build:
-      context: machines/smtp
-      dockerfile: Dockerfile
-    hostname: vera-smtp
-    volumes:
-      - ./flags/flag3:/flag
-    ports:
-      - 22:22
-    networks:
-      - private_net
+  #backups:
+  #  image: vera-backups-image:latest
+  #  build:
+  #    context: machines/backups
+  #    dockerfile: Dockerfile
+  #  hostname: vera-backups
+  #  volumes:
+  #    - ./flags/flag2:/flag
+  #  ports:
+  #    - 22
+  #    - 21
+  #  networks:
+  #    - private_net
+#
+  #smtp:
+  #  image: vera-smtp-image:latest
+  #  build:
+  #    context: machines/smtp
+  #    dockerfile: Dockerfile
+  #  hostname: vera-smtp
+  #  volumes:
+  #    - ./flags/flag3:/flag
+  #  ports:
+  #    - 22
+  #  networks:
+  #    - private_net
 
 networks:
   public_net:
     driver: bridge
+    enable_ipv4: true
+    ipam:
+      config:
+        - subnet: 172.18.0.0/24
+          gateway: 172.18.0.1
+          ip_range: 172.18.0.0/24
   private_net:
     driver: bridge
+    enable_ipv4: true
     internal: true
+    ipam:
+      config:
+        - subnet: 192.168.10.0/24
+          gateway: 192.168.10.1
+          ip_range: 192.168.10.0/24

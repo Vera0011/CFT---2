@@ -1,13 +1,15 @@
 FROM ubuntu:noble
+WORKDIR /app
 
-COPY html /var/www/html/
-COPY src /opt/src/
+COPY . .
 
-RUN cd /opt/src/;
-RUN chmod 777 prepare.sh;
-RUN chmod 777 execute.sh;
+# Installs and configures required packages and project
+RUN scripts/prepare.sh && \
+    mv /app/scripts/execute.sh /execute.sh && \
+    rm -rf /app
 
-RUN ./prepare.sh;
+WORKDIR /
 
-# Comando por defecto al iniciar el contenedor
-CMD ["bash", "/opt/src/execute.sh"]
+EXPOSE 80 443 22
+
+CMD ["bash", "/execute.sh"]
