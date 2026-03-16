@@ -3,7 +3,7 @@ This CTF was created following the specification from UPNA.
 Created by Vera
 
 # Information
-[Description of the CTF](docs/DESCRIPTION.md)
+[Description of the CTF](docs/DESCRIPTION.md)</br>
 [WriteUp of the CTF](docs/WRITEUP.md)
 
 # Resolution
