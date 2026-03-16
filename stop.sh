@@ -1,5 +1,10 @@
 #!/bin/bash
 
+############################################################################################
+# This script do the following actions:
+#	- Maps containers and stops them (reading from dockername.txt or from docker-compose.yml)
+############################################################################################
+
 if [ -e dockername.txt ]; then
 	CONTAINERS=$(cat dockername.txt)
 	

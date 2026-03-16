@@ -1,52 +1,72 @@
 services:
   bastion:
     image: vera-bastion-image:latest
+    container_name: vera-bastion
     build:
       context: machines/bastion
       dockerfile: Dockerfile
     hostname: vera-bastion
     volumes:
-      - ./flag1:/flag
+      - ./flags/flag1.txt:/usr/share/nginx/html/.git
     ports:
-      - 8080:80
+      - 80
+      - 443
+      - 22
+    cap_add:
+      - NET_ADMIN
     networks:
-      - internal_net
+      public_net:
+        ipv4_address: 172.18.0.2
+        interface_name: eth0
+      private_net:
+        ipv4_address: 192.168.10.2
+        interface_name: eth1
+    #depends_on:
+    #  backups:
+    #    condition: service_started
 
-  machine1:
-    image: vera-machine1-image:latest
-    build:
-      context: machines/machine1
-      dockerfile: Dockerfile
-    hostname: vera-machine1
-    volumes:
-      - ./flag2:/flag
-    ports:
-      - 8080:80
-      - 22:22
-    networks:
-      - bastion_to_machine1
-      - machine1_to_machine2
-
-  machine2:
-    image: vera-machine2-image:latest
-    build:
-      context: machines/machine2
-      dockerfile: Dockerfile
-    hostname: vera-machine2
-    volumes:
-      - ./flag3:/flag
-    ports:
-      - 22:22
-    networks:
-      - bastion_to_machine2
-      - machine1_to_machine2
+  #backups:
+  #  image: vera-backups-image:latest
+  #  build:
+  #    context: machines/backups
+  #    dockerfile: Dockerfile
+  #  hostname: vera-backups
+  #  volumes:
+  #    - ./flags/flag2:/flag
+  #  ports:
+  #    - 22
+  #    - 21
+  #  networks:
+  #    - private_net
+#
+  #smtp:
+  #  image: vera-smtp-image:latest
+  #  build:
+  #    context: machines/smtp
+  #    dockerfile: Dockerfile
+  #  hostname: vera-smtp
+  #  volumes:
+  #    - ./flags/flag3:/flag
+  #  ports:
+  #    - 22
+  #  networks:
+  #    - private_net
 
 networks:
-  internal_net:
+  public_net:
     driver: bridge
-  bastion_to_machine1:
+    enable_ipv4: true
+    ipam:
+      config:
+        - subnet: 172.18.0.0/24
+          gateway: 172.18.0.1
+          ip_range: 172.18.0.0/24
+  private_net:
     driver: bridge
-  bastion_to_machine2:
-    driver: bridge
-  machine1_to_machine2:
-    driver: bridge
+    enable_ipv4: true
+    internal: true
+    ipam:
+      config:
+        - subnet: 192.168.10.0/24
+          gateway: 192.168.10.1
+          ip_range: 192.168.10.0/24

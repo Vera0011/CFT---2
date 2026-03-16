@@ -1,3 +1,1 @@
 bastion
-machine1
-machine2

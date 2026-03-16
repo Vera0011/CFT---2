@@ -1,5 +1,11 @@
 #!/bin/bash
 
+##############################################################################################
+# This script do the following actions:
+#	- Maps containers and removes them (reading from dockername.txt or from docker-compose.yml)
+#	- Also removes images and networks
+##############################################################################################
+
 if [ -e dockername.txt ]; then
 	CONTAINERS=$(cat dockername.txt)
 	
