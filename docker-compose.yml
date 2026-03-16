@@ -5,7 +5,7 @@ services:
     build:
       context: machines/bastion
       dockerfile: Dockerfile
-    hostname: vera-bastion
+    hostname: bastion-lab
     volumes:
       - ./flags/flag1.txt:/usr/share/nginx/html/.git
     ports:
@@ -21,36 +21,27 @@ services:
       private_net:
         ipv4_address: 192.168.10.2
         interface_name: eth1
-    #depends_on:
-    #  backups:
-    #    condition: service_started
+    depends_on:
+      backups:
+        condition: service_started
 
-  #backups:
-  #  image: vera-backups-image:latest
-  #  build:
-  #    context: machines/backups
-  #    dockerfile: Dockerfile
-  #  hostname: vera-backups
-  #  volumes:
-  #    - ./flags/flag2:/flag
-  #  ports:
-  #    - 22
-  #    - 21
-  #  networks:
-  #    - private_net
-#
-  #smtp:
-  #  image: vera-smtp-image:latest
-  #  build:
-  #    context: machines/smtp
-  #    dockerfile: Dockerfile
-  #  hostname: vera-smtp
-  #  volumes:
-  #    - ./flags/flag3:/flag
-  #  ports:
-  #    - 22
-  #  networks:
-  #    - private_net
+  backups:
+    image: vera-backups-image:latest
+    container_name: vera-backups
+    privileged: true
+    build:
+      context: machines/backups
+      dockerfile: Dockerfile
+    hostname: backups-lab
+    volumes:
+      - ./flags/flag2.txt:/root/flag.txt
+      - ./flags/flag3.txt:/home/ubuntu/flag.txt
+    ports:
+      - 22
+    networks:
+      private_net:
+        ipv4_address: 192.168.10.3
+        interface_name: eth0
 
 networks:
   public_net:
@@ -61,6 +52,7 @@ networks:
         - subnet: 172.18.0.0/24
           gateway: 172.18.0.1
           ip_range: 172.18.0.0/24
+
   private_net:
     driver: bridge
     enable_ipv4: true
